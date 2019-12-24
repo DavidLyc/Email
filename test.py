@@ -1,8 +1,9 @@
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
 
 data = pd.read_table('spam/SMSSpamCollection', sep='\t', names=['label', 'message'])
 data['label'] = data.label.map({'ham': 0, 'spam': 1})  # 字符串转为数值
@@ -20,7 +21,18 @@ test_data = count_vector.transform(test_msg)
 naive_bayes = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 naive_bayes.fit(train_data, train_label)
 predictions = naive_bayes.predict(test_data)
-print('Accuracy score: ', format(accuracy_score(test_label, predictions)))
-print('Precision score: ', format(precision_score(test_label, predictions)))
-print('Recall score: ', format(recall_score(test_label, predictions)))
-print('F1 score: ', format(f1_score(test_label, predictions)))
+# print('Accuracy score: ', format(accuracy_score(test_label, predictions)))
+# print('Precision score: ', format(precision_score(test_label, predictions)))
+# print('Recall score: ', format(recall_score(test_label, predictions)))
+# print('F1 score: ', format(f1_score(test_label, predictions)))
+print(classification_report(test_label, predictions, target_names=['ham', 'spam'], digits=4))
+
+# SVM方法
+svc = SVC(kernel='linear', class_weight='balanced')
+svc.fit(train_data, train_label)
+predictions = svc.predict(test_data)
+# print('Accuracy score: ', format(accuracy_score(test_label, predictions)))
+# print('Precision score: ', format(precision_score(test_label, predictions)))
+# print('Recall score: ', format(recall_score(test_label, predictions)))
+# print('F1 score: ', format(f1_score(test_label, predictions)))
+print(classification_report(test_label, predictions, target_names=['ham', 'spam'], digits=4))
