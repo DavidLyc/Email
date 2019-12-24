@@ -49,7 +49,6 @@ print(classification_report(test_label, predictions, target_names=['ham', 'spam'
 #
 #          ham     0.9835    0.9990    0.9912       955
 #         spam     0.9931    0.9000    0.9443       160
-#
 
 # tf-idf模型
 # naive_bayes
